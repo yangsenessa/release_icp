@@ -1,0 +1,55 @@
+{
+  "canisters": {
+    "internet_identity": {
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "frontend": {},
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "type": "custom",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+    },
+    "release_contract_backend": {
+      "candid": "src/release_contract_backend/release_contract_backend.did",
+      "package": "release_contract_backend",
+      "type": "rust"
+    },
+    "release_contract_frontend": {
+      "dependencies": [
+        "release_contract_backend"
+      ],
+      "source": [
+        "src/release_contract_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "release_contract_frontend"
+    },
+    "reverse_index_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/d87954601e4b22972899e9957e800406a0a6b929/rs/rosetta-api/icrc1/index-ng/index-ng.did",
+      "wasm": "https://download.dfinity.systems/ic/d87954601e4b22972899e9957e800406a0a6b929/canisters/ic-icrc1-index-ng.wasm.gz",
+      "specified_id": "76f3y-fyaaa-aaaah-qpxxa-cai"
+    },
+    "reverse_ledger_canister": {
+      "type": "custom",
+      "candid": "https://raw.githubusercontent.com/dfinity/ic/550209a750be0575cc4afff5e23c04b03048c08e/rs/ledger_suite/icrc1/ledger/ledger.did",
+      "wasm": "https://download.dfinity.systems/ic/550209a750be0575cc4afff5e23c04b03048c08e/canisters/ic-icrc1-ledger.wasm.gz",
+      "specified_id": "mxzaz-hqaaa-aaaar-qaada-cai",
+      "metadata": [
+        {
+            "name": "candid:service"
+        }
+        ]  
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
