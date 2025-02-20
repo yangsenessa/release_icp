@@ -106,3 +106,39 @@ Check deployment by querying governance balance:
 ```bash
 dfx canister call reverse_ledger_canister icrc1_balance_of
 ```
+
+
+# Test Script Documentation
+
+## Overview
+This Bash script performs testing operations for ICRC token interactions on the Internet Computer Protocol (ICP).
+
+## Prerequisites
+- dfx CLI tool installed
+- Access to ICP network
+- Proper canister deployment
+
+## Important Principals
+- Reverse Main Site: fs7xc-hl64c-g3bt5-r2k67-txuht-sn5bp-lzfas-pdqrj-tmm64-mbahx-zae
+- Reverse Gov: 4zbyc-zoe6z-gbmu3-5ewrb-nnfeo-2a5jj-qzz2s-qkyqf-3j3z4-khjqz-jqe
+- Reverse Miner: ozvt2-nr7fe-co6wl-76lzl-t4cma-m7p4t-6j43w-vh67m-6vr3b-d3f7d-yae
+
+## Operations Tested
+
+### 1. Token Burning
+- Executes ICRC1 transfer to burn 10,000,000,000 tokens
+- Tokens are sent to the Reverse Miner principal
+
+### 2. ICRC2 Payment Testing
+Performs two operations:
+1. Approval Testing
+    - Approves 20,000,000,000 tokens
+    - Sets Reverse Main Site as the spender
+
+2. Allowance Check
+    - Queries allowance between Reverse Gov (account) and Reverse Main Site (spender)
+
+## Execution Environment
+- Script runs in /root/icp/release_icp/tokens/
+- Uses 'set -e' to stop on first error
+- Operates within release_contract directory
