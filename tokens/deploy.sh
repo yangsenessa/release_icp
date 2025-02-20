@@ -29,12 +29,25 @@ else
     echo "No identity directory found, I'm going to create a new $REVERSE_GOV identity and persist it"
     dfx identity new "$REVERSE_GOV" --storage-mode=plaintext
 fi
+
+echo "==============CREATE MAIN SITE IDENTITY================"
+REVERSE_MAIN_SITE="reverse_main_site"
+REVERSE_MAIN_SITE_HOME_DIR="$DFX_HOME/.config/dfx/identity/$REVERSE_MAIN_SITE"
+
+if [ -d "$REVERSE_MAIN_SITE_HOME_DIR" ]; then
+    echo "Found $REVERSE_MAIN_SITE identity in $REVERSE_MAIN_SITE_HOME_DIR" 
+else
+    echo "No identity directory found, I'm going to create a new $REVERSE_MAIN_SITE identity and persist it"
+    dfx identity new "$REVERSE_MAIN_SITE" --storage-mode=plaintext
+fi
+dfx identity use "$REVERSE_MAIN_SITE"
+REVERSE_MAIN_SITE_PRINCIPAL=$(dfx identity get-principal)
+
 dfx identity use "$REVERSE_GOV"
 REVERSE_GOV_PRINCIPAL=$(dfx identity get-principal)
 echo "======REVERSE_MINER_PRINCIPAL=\"$REVERSE_MINER_PRINCIPAL\" ================"
 
 echo "===========Prepared Reverse Tokens===================="
-dfx identity use $REVERSE_MINER
 dfx deploy reverse_ledger_canister --argument "(variant {
   Init = record {
     token_symbol = \"REV\";
@@ -80,3 +93,28 @@ dfx canister call reverse_ledger_canister icrc1_balance_of "(record {
 })"
 
 echo "===========SETUP DONE========="
+
+echo "===========icrc2_approve========="
+dfx canister call  reverse_ledger_canister icrc2_approve "(
+  record {
+    spender= record {
+      owner = principal \"$REVERSE_MAIN_SITE_PRINCIPAL\";
+    };
+    amount = 20_000_000_000_000_000: nat;
+  }
+)"
+
+
+dfx canister call  reverse_ledger_canister icrc2_approve "(
+  record {
+    spender= record {
+      owner = principal \"$REVERSE_MAIN_SITE_PRINCIPAL\";
+    };
+    amount = 2_000_000_000_000_000: nat;
+  }
+)"
+
+echo "===========Related principal========="
+echo "REVERSE_MAIN_SITE_PRINCIPAL: $REVERSE_MAIN_SITE_PRINCIPAL"
+echo "REVERSE_GOV_PRINCIPAL: $REVERSE_GOV_PRINCIPAL"
+echo "REVERSE_MINER_PRINCIPAL: $REVERSE_MINER_PRINCIPAL"
